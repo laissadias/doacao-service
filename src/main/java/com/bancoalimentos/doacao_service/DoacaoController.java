@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/doacoes")
 @Tag(name = "Doações", description = "Gerenciamento de doações de alimentos")
@@ -42,12 +41,14 @@ public class DoacaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Cadastra uma nova doação")
-    public Doacao cadastrar(@Valid @RequestBody Doacao doacao) {        return repository.save(doacao);
+    public Doacao cadastrar(@Valid @RequestBody Doacao doacao) {
+        return repository.save(doacao);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza os dados de uma doação")
-    public ResponseEntity<Doacao> atualizar(@PathVariable Long id, @Valid @RequestBody Doacao dados) {        Optional<Doacao> existente = repository.findById(id);
+    public ResponseEntity<Doacao> atualizar(@PathVariable Long id, @Valid @RequestBody Doacao dados) {
+        Optional<Doacao> existente = repository.findById(id);
 
         if (existente.isEmpty()) {
             return ResponseEntity.notFound().build();
