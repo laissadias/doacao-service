@@ -1,6 +1,5 @@
 package com.bancoalimentos.doacao_service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,22 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Doações", description = "Gerenciamento de doações de alimentos")
 public class DoacaoController {
 
-    private final List<Doacao> doacoes = new ArrayList<>();
-    private long proximoId = 1;
+    private final DoacaoRepository repository;
+
+    public DoacaoController(DoacaoRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     @Operation(summary = "Lista todas as doações cadastradas")
     public List<Doacao> listar() {
-        return doacoes;
+        return repository.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Cadastra uma nova doação")
     public Doacao cadastrar(@RequestBody Doacao doacao) {
-        doacao.setId(proximoId);
-        proximoId++;
-        doacoes.add(doacao);
-        return doacao;
+        return repository.save(doacao);
     }
 }
