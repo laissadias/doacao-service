@@ -1,21 +1,15 @@
 package com.bancoalimentos.doacao_service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/doacoes")
@@ -48,14 +42,12 @@ public class DoacaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Cadastra uma nova doação")
-    public Doacao cadastrar(@RequestBody Doacao doacao) {
-        return repository.save(doacao);
+    public Doacao cadastrar(@Valid @RequestBody Doacao doacao) {        return repository.save(doacao);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza os dados de uma doação")
-    public ResponseEntity<Doacao> atualizar(@PathVariable Long id, @RequestBody Doacao dados) {
-        Optional<Doacao> existente = repository.findById(id);
+    public ResponseEntity<Doacao> atualizar(@PathVariable Long id, @Valid @RequestBody Doacao dados) {        Optional<Doacao> existente = repository.findById(id);
 
         if (existente.isEmpty()) {
             return ResponseEntity.notFound().build();

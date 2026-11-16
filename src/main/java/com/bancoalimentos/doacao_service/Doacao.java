@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Doacao {
@@ -12,9 +16,18 @@ public class Doacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O alimento é obrigatório")
+    @Size(max = 100, message = "O alimento deve ter no máximo 100 caracteres")
     private String alimento;
+
+    @NotBlank(message = "O nome do doador é obrigatório")
+    @Size(max = 100, message = "O nome do doador deve ter no máximo 100 caracteres")
     private String nomeDoador;
+
+    @Positive(message = "A quantidade deve ser maior que zero")
     private double quantidadeKg;
+
+    @PositiveOrZero(message = "A validade não pode ser negativa")
     private int validadeEmDias;
 
     public Doacao() {
