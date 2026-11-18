@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: doacoes
+      POSTGRES_USER: doacao
+      POSTGRES_PASSWORD: doacao123
+    volumes:
+      - dados-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U doacao -d doacoes"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/doacoes
+      SPRING_DATASOURCE_USERNAME: doacao
+      SPRING_DATASOURCE_PASSWORD: doacao123
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  dados-postgres:
